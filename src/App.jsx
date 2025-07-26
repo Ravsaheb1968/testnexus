@@ -1,30 +1,32 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Login from './pages/Login';
-import Navbar from './components/Navbar';
 import ActivateUser from './pages/ActivateUser';
+import DeactivateUser from './pages/DeactivateUser';
+import ModifyUser from './pages/ModifyUser';
+import Navbar from './components/Navbar';
 
-const isAuthenticated = true; // Replace with your actual auth logic
+function AppContent() {
+  const isAuthenticated = localStorage.getItem('token');
+  const location = useLocation();
+
+  return (
+    <>
+      {isAuthenticated && location.pathname !== '/' && <Navbar />}
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/activate-user" element={isAuthenticated ? <ActivateUser /> : <Navigate to="/" />} />
+        <Route path="/deactivate-user" element={isAuthenticated ? <DeactivateUser /> : <Navigate to="/" />} />
+        <Route path="/modify-user" element={isAuthenticated ? <ModifyUser /> : <Navigate to="/" />} />
+      </Routes>
+    </>
+  );
+}
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route
-          path="/activate-user"
-          element={
-            isAuthenticated
-              ? (
-                <>
-                  <Navbar />
-                  <ActivateUser />
-                </>
-              )
-              : <Navigate to="/" />
-          }
-        />
-      </Routes>
+      <AppContent />
     </Router>
   );
 }

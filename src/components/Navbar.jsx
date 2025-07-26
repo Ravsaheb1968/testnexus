@@ -5,6 +5,7 @@ import './Navbar.css';
 function Navbar() {
   const navigate = useNavigate();
   const [showAdminMenu, setShowAdminMenu] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -14,7 +15,7 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-left">
-        <span className="navbar-logo">colt<span>CTAP</span></span>
+        <span className="navbar-logo">test<span>Nexus</span></span>
 
         <div className="dropdown">
           <span className="dropdown-toggle" onClick={() => setShowAdminMenu(!showAdminMenu)}>
@@ -22,7 +23,16 @@ function Navbar() {
           </span>
           {showAdminMenu && (
             <div className="dropdown-menu">
-              <Link to="/user-management">User Management</Link>
+              <span className="dropdown-subtoggle" onClick={() => setShowUserMenu(!showUserMenu)}>
+                User Management ▸
+              </span>
+              {showUserMenu && (
+                <div className="sub-dropdown-menu">
+                  <Link to="/activate-user">Activate User</Link>
+                  <Link to="/deactivate-user">Deactivate User</Link>
+                  <Link to="/modify-user">Modify User</Link>
+                </div>
+              )}
               <Link to="/script-management">Script Management</Link>
               <Link to="/allocation">Allocation</Link>
             </div>
