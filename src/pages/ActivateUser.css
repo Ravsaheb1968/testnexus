@@ -1,14 +1,18 @@
 .activate-user-container {
-  max-width: 700px;
-  margin: 4rem auto 2rem;
+  max-width: 800px;
+  margin: 8rem auto 2rem;
   background: white;
   padding: 1.5rem;
   border-radius: 8px;
-  box-shadow: 0 2px 7px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.1);
   z-index: 1;
   position: relative;
   min-height: calc(60vh - 3rem);
   overflow-y: auto;
+}
+
+h2 {
+  color: black;
 }
 
 .activate-user-form {
@@ -24,12 +28,13 @@
 }
 
 label {
-  color:black;
+  color: black;
   font-weight: 500;
   margin-bottom: 0.2rem;
 }
 
-input[type="text"], select {
+input[type="text"],
+select {
   padding: 0.6rem;
   border: 1px solid #ccc;
   border-radius: 4px;

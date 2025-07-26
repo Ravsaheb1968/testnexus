@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './ActivateUser.css';
 
 function ModifyUser() {
+  const [userType, setUserType] = useState('User');
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [automationSuite, setAutomationSuite] = useState('');
@@ -21,6 +22,26 @@ function ModifyUser() {
     <div className="activate-user-container">
       <h2>Modify User</h2>
       <form className="activate-user-form" onSubmit={handleSubmit}>
+        <div className="radio-group">
+          <label>
+            <input
+              type="radio"
+              value="User"
+              checked={userType === 'User'}
+              onChange={() => setUserType('User')}
+            />
+            User
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="Admin"
+              checked={userType === 'Admin'}
+              onChange={() => setUserType('Admin')}
+            />
+            Admin
+          </label>
+        </div>
         <label>Email ID</label>
         <select value={email} onChange={(e) => setEmail(e.target.value)}>
           <option>--Select--</option>

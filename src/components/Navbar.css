@@ -1,5 +1,5 @@
 .navbar {
-  position: sticky;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -101,4 +101,141 @@ button:hover {
   gap: 0.3rem;
   padding-left: 1rem;
   border-left: 2px solid #ddd;
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 2rem;
+  background-color: #e0ecf8;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-left,
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-left a,
+.navbar-right a,
+.dropdown-toggle {
+  margin-right: 1rem;
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.navbar-left a:hover,
+.navbar-right a:hover,
+.dropdown-toggle:hover {
+  color: #007bff;
+}
+
+.navbar-logo {
+  font-weight: bold;
+  margin-right: 2rem;
+  color: #333;
+}
+
+.navbar-logo span {
+  color: #0ca6f4;
+}
+
+.navbar-user {
+  margin-right: 1rem;
+  font-weight: 500;
+  color: #444;
+}
+
+button {
+  background-color: #f97316;
+  border: none;
+  padding: 6px 12px;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #ea5c00;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-menu {
+  position: absolute;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+}
+
+.dropdown-menu a {
+  padding: 0.3rem 0.5rem;
+  white-space: nowrap;
+  color: #333;
+}
+
+.dropdown-menu a:hover {
+  background-color: #f0f0f0;
+  color: #007bff;
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 2rem;
+  background-color: #e0ecf8;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-left a,
+.navbar-right a {
+  margin-right: 1rem;
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.navbar-left a:hover,
+.navbar-right a:hover {
+  color: #007bff;
+}
+
+.navbar-logo {
+  font-weight: bold;
+  margin-right: 2rem;
+  color: #333;
+}
+
+.navbar-logo span {
+  color: #0ca6f4;
+}
+
+.navbar-user {
+  margin-right: 1rem;
+  font-weight: 500;
+  color: #444;
+}
+
+button {
+  background-color: #f97316;
+  border: none;
+  padding: 6px 12px;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #ea5c00;
 }
