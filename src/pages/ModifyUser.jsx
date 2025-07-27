@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './ActivateUser.css';
+import './ActivateUser.css'; // reused styles for consistency
 
 function ModifyUser() {
   const [userType, setUserType] = useState('User');
@@ -9,10 +9,18 @@ function ModifyUser() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert('User Modified');
+
+    if (!email || !username || (userType === 'User' && !automationSuite)) {
+      alert('Please fill all required fields.');
+      return;
+    }
+
+    alert(`${userType} Modified`);
+    // TODO: Send update request to backend
   };
 
   const handleClear = () => {
+    setUserType('User');
     setEmail('');
     setUsername('');
     setAutomationSuite('');
@@ -42,9 +50,10 @@ function ModifyUser() {
             Admin
           </label>
         </div>
+
         <label>Email ID</label>
         <select value={email} onChange={(e) => setEmail(e.target.value)}>
-          <option>--Select--</option>
+          <option value="">--Select--</option>
           <option value="user1@example.com">user1@example.com</option>
         </select>
 
@@ -55,12 +64,16 @@ function ModifyUser() {
           onChange={(e) => setUsername(e.target.value)}
         />
 
-        <label>Automation Suite</label>
-        <input
-          type="text"
-          value={automationSuite}
-          onChange={(e) => setAutomationSuite(e.target.value)}
-        />
+        {userType === 'User' && (
+          <>
+            <label>Automation Suite</label>
+            <input
+              type="text"
+              value={automationSuite}
+              onChange={(e) => setAutomationSuite(e.target.value)}
+            />
+          </>
+        )}
 
         <div className="btn-group">
           <button type="submit" className="btn green">Modify</button>
