@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import Login from './pages/Login';
+import Login from './pages/LoginPage';
 import ActivateUser from './pages/ActivateUser';
 import DeactivateUser from './pages/DeactivateUser';
 import ModifyUser from './pages/ModifyUser';
