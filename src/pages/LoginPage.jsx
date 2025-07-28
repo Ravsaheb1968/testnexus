@@ -1,58 +1,66 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './LoginPage.css';
-import loginIllustration from './images/login-illustration.png';
+import loginBg from '/images/Logo.png';
+import { FaEnvelope, FaLock } from 'react-icons/fa';
 
-function LoginPage() {
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Handle login logic here
-    alert(`Logging in as ${email}`);
+    try {
+      localStorage.setItem('token', 'sample-jwt-token');
+      window.location.href = '/activate-user';
+    } catch {
+      setError('Invalid credentials');
+    }
   };
 
   return (
-    <div className="login-container">
-      <div className="login-box">
-        <h2>Login to TestNexus</h2>
+    <div className="login-wrapper">
+      <div className="login-left">
+        <img src={loginBg} alt="Login Illustration" />
+      </div>
+
+      <div className="login-right">
+        <h2>
+          Welcome to <span className="brand">TestNexus</span>
+        </h2>
         <form onSubmit={handleLogin}>
-          <label>Email</label>
+          <label htmlFor="email">
+            <FaEnvelope className="icon" />
+            Email
+          </label>
           <input
+            id="email"
             type="email"
+            placeholder="Enter email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
 
-          <label>Password</label>
+          <label htmlFor="password">
+            <FaLock className="icon" />
+            Password
+          </label>
           <input
+            id="password"
             type="password"
+            placeholder="Enter password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
 
           <button type="submit">Login</button>
+          {error && <p className="error">{error}</p>}
         </form>
-      </div>
-
-      <div className="login-info-section">
-        <img src={loginIllustration} alt="Login Illustration" className="login-illustration" />
-        <h3>🔹 What is TestNexus?</h3>
-        <p>
-          TestNexus is a modern platform to manage automated test suites, user roles,
-          and environment allocations—all from a single interface.
-        </p>
-        <ul>
-          <li>✅ User and Admin management</li>
-          <li>✅ Trigger, block, and monitor test cases</li>
-          <li>✅ Project-wise function area control</li>
-          <li>✅ eZAutomate compatibility</li>
-        </ul>
       </div>
     </div>
   );
-}
+};
 
-export default LoginPage;
+export default Login;
