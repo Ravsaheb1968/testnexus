@@ -55,7 +55,7 @@ const Login = () => {
             required
           />
 
-          <button type="submit">Login</button>
+          <button type="submit" id="log-btn">Login</button>
           {error && <p className="error">{error}</p>}
         </form>
       </div>
