@@ -7,6 +7,7 @@ import ModifyUser from './pages/ModifyUser';
 import Navbar from './components/Navbar';
 import ScriptManagement from './pages/ScriptManagement';
 import MachineAllocation from './pages/MachineAllocation';
+import Layout from './components/Layout';
 function AppContent() {
   const isAuthenticated = localStorage.getItem('token');
   const location = useLocation();
@@ -16,11 +17,11 @@ function AppContent() {
       {isAuthenticated && location.pathname !== '/' && <Navbar />}
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/activate-user" element={isAuthenticated ? <ActivateUser /> : <Navigate to="/" />} />
-        <Route path="/deactivate-user" element={isAuthenticated ? <DeactivateUser /> : <Navigate to="/" />} />
-        <Route path="/modify-user" element={isAuthenticated ? <ModifyUser /> : <Navigate to="/" />} />
-        <Route path="/script-management" element={<ScriptManagement />} />
-        <Route path="/allocation" element={<MachineAllocation />} />
+        <Route path="/activate-user" element={isAuthenticated ? <Layout> <ActivateUser /></Layout> : <Navigate to="/" />} />
+        <Route path="/deactivate-user" element={isAuthenticated ? <Layout><DeactivateUser /></Layout> : <Navigate to="/" />} />
+        <Route path="/modify-user" element={isAuthenticated ? <Layout><ModifyUser /></Layout> : <Navigate to="/" />} />
+        <Route path="/script-management" element={<Layout><ScriptManagement /></Layout>} />
+        <Route path="/allocation" element={<Layout><MachineAllocation /></Layout>} />
       </Routes>
     </>
   );
