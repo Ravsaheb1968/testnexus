@@ -1,7 +1,7 @@
 .machine-allocation-container {
   max-width: 1000px;
   margin: 6rem auto 2rem;
-  background: white;
+  /* background: white; */
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -19,19 +19,19 @@
   padding: 0.6rem;
   margin-bottom: 1rem;
   border-radius: 4px;
-  border: 1px solid #ccc;
+  border: 1px solid #1b1b1b;
 }
 
 .machine-table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 1rem;
-  color:black;
+  color:rgb(255, 255, 255);
 }
 
 .machine-table th, .machine-table td {
   padding: 0.8rem;
-  border: 1px solid #ccc;
+  border: 1px solid #141414;
   text-align: left;
 }
 

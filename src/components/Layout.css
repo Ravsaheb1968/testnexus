@@ -1,17 +1,24 @@
 .app-background {
   min-height: 100vh;
-  background-image: url('images/Layout.png'); /* update path as needed */
+  background-image: url('images/TestNexus_Infinity.jpg');
+  /* update path as needed */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  padding-top: 70px; /* space for navbar */
+  padding-top: 70px;
+  /* space for navbar */
 }
 
 .content-container {
   padding: 2rem;
-  background-color: rgba(255, 255, 255, 0.85); /* slight white overlay */
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+  /* Stronger blur */
+  -webkit-backdrop-filter: blur(19px);
   border-radius: 12px;
-  margin: 2rem auto;
-  max-width: 1200px;
+  margin: 7rem auto;
+  min-height:60vh;
+  max-width:900px;
+  width: 100%;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
 }
