@@ -1,6 +1,6 @@
 .app-background {
   min-height: 100vh;
-  background-image: url('images/TestNexus_Infinity.jpg');
+  background-image: url('images/BgCodeImage.jpg');
   /* update path as needed */
   background-size: cover;
   background-position: center;
@@ -11,14 +11,18 @@
 
 .content-container {
   padding: 2rem;
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(16px);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  backdrop-filter: blur(1px);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   /* Stronger blur */
-  -webkit-backdrop-filter: blur(19px);
-  border-radius: 12px;
+  -webkit-backdrop-filter: blur(6px);
   margin: 7rem auto;
-  min-height:60vh;
-  max-width:900px;
+  min-height: 60vh;
+  max-width: 900px;
   width: 100%;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  color: white;
+
 }

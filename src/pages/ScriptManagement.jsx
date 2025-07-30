@@ -48,7 +48,7 @@ function ScriptManagement() {
       <form className="script-form">
         <div className="form-row">
           <div className="form-group">
-            <label>Suite</label>
+            <label id='lable-name1' >Suite</label>
             <select value={suite} onChange={(e) => setSuite(e.target.value)}>
               <option value="">--Select--</option>
               <option value="CPQ_Quote_Processing">CPQ_Quote_Processing</option>
@@ -57,7 +57,7 @@ function ScriptManagement() {
           </div>
 
           <div className="form-group">
-            <label>Functional Area</label>
+            <label id='lable-name2'>Functional Area</label>
             <select value={functionArea} onChange={(e) => setFunctionArea(e.target.value)}>
               <option value="">--Select--</option>
               <option value="Batch">Batch</option>
@@ -77,7 +77,7 @@ function ScriptManagement() {
         <div className="testcase-list">
           <div className="select-all-container">
             <label>
-              <input
+              <input 
                 type="checkbox"
                 checked={selectAll}
                 onChange={handleSelectAll}

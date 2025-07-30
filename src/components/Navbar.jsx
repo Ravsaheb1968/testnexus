@@ -4,7 +4,7 @@ import './Navbar.css';
 
 function Navbar() {
   const navigate = useNavigate();
-
+  const [showAutomationCatalog, setShowAutomationCatalog] = useState(false);
   const [showAdminMenu, setShowAdminMenu] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -18,6 +18,7 @@ function Navbar() {
     setShowAdminMenu(false);
     setShowUserMenu(false);
     setShowMobileMenu(false);
+    setShowAutomationCatalog(false);
   };
 
   const toggleAdminMenu = () => {
@@ -29,6 +30,11 @@ function Navbar() {
     setShowUserMenu((prev) => !prev);
   };
 
+  const toggleAutomationCatalog = () => {
+    setShowAutomationCatalog((prev) => !prev);
+    setShowAdminMenu(false);
+    setShowUserMenu(false);
+  }
   return (
     <nav className="navbar">
       <div className="navbar-logo">test<span>Nexus</span></div>
@@ -59,8 +65,21 @@ function Navbar() {
             </div>
           )}
         </div>
-
-        <Link to="#" onClick={handleLinkClick}>Automation Catalog</Link>
+        <div className="dropdown">
+          <span className="dropdown-toggle" onClick={toggleAutomationCatalog}>
+            Automation Catalog ▾
+          </span>
+          {showAutomationCatalog && (
+            <div className="dropdown-menu">
+              {/* <span className="dropdown-subtoggle" onClick={toggleUserMenu}>
+                User Management ▸
+              </span> */}
+              <Link to="/activate-user" onClick={handleLinkClick}>Create Request</Link>
+              <Link to="/deactivate-user" onClick={handleLinkClick}>Dashboard</Link>
+            </div>
+          )}
+        </div>
+        {/* <Link to="#" onClick={handleLinkClick}></Link> */}
         <Link to="#" onClick={handleLinkClick}>About Us</Link>
 
         <div className="navbar-mobile-user">

@@ -147,6 +147,10 @@ form .error {
 
 #log-btn{
   margin-top:2.5rem;
+  border:2px solid black
+}
+input{
+  border:2px solid black
 }
 /* === Responsive === */
 @media screen and (max-width: 768px) {
