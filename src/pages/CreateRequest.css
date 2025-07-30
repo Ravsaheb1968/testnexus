@@ -1,0 +1,98 @@
+/* === Container & Layout === */
+.create-request-container {
+  max-width: 700px;
+  margin: 6rem auto 2rem;
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(16px);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  color: white;
+}
+
+/* === Heading === */
+.create-request-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* === Form Styling === */
+.create-request-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.create-request-form label {
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+  color: #ffffff;
+}
+
+.create-request-form select,
+.create-request-form input {
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #222;
+  font-size: 1rem;
+  width: 100%;
+}
+
+/* === Test Case List === */
+.test-case-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+/* === Add Test Case Button === */
+.add-test-btn {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  align-self: flex-start;
+}
+
+.add-test-btn:hover {
+  background-color: #2563eb;
+}
+
+/* === Submit Button === */
+.submit-btn {
+  background-color: #22c55e;
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.submit-btn:hover {
+  background-color: #16a34a;
+}
+
+/* === Responsive === */
+@media (max-width: 600px) {
+  .create-request-container {
+    padding: 1.5rem 1rem;
+    margin: 4rem 1rem 1rem;
+  }
+
+  .create-request-container h2 {
+    font-size: 1.5rem;
+  }
+}

@@ -24,10 +24,12 @@ function Navbar() {
   const toggleAdminMenu = () => {
     setShowAdminMenu((prev) => !prev);
     setShowUserMenu(false);
+    setShowAutomationCatalog(false);
   };
 
   const toggleUserMenu = () => {
     setShowUserMenu((prev) => !prev);
+    setShowAutomationCatalog(false);
   };
 
   const toggleAutomationCatalog = () => {
@@ -74,8 +76,8 @@ function Navbar() {
               {/* <span className="dropdown-subtoggle" onClick={toggleUserMenu}>
                 User Management ▸
               </span> */}
-              <Link to="/activate-user" onClick={handleLinkClick}>Create Request</Link>
-              <Link to="/deactivate-user" onClick={handleLinkClick}>Dashboard</Link>
+              <Link to="/create-request" onClick={handleLinkClick}>Create Request</Link>
+              <Link to="/dashboard-user" onClick={handleLinkClick}>Dashboard</Link>
             </div>
           )}
         </div>

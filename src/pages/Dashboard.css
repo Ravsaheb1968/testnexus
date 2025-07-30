@@ -1,0 +1,114 @@
+.dashboard-container {
+  max-width: 1200px;
+  margin: 5rem auto;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  backdrop-filter: blur(18px);
+  color: white;
+}
+
+.filters-section {
+  margin-bottom: 2rem;
+}
+
+.filters-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.filters-row select,
+.filters-row input {
+  flex: 1;
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+}
+
+.generate-btn-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn.generate {
+  background-color: #22c55e;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.execution-summary {
+  margin: 2rem 0;
+}
+
+.charts {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.chart {
+  background: #1f1f1f;
+  border-radius: 8px;
+  padding: 1rem;
+  flex: 1;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.table-section {
+  margin-top: 2rem;
+  overflow-x: auto;
+}
+
+.table-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  color: #111;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 0.8rem 1rem;
+  border: 1px solid #ddd;
+  font-size: 0.95rem;
+  text-align: left;
+}
+
+.status-completed {
+  color: green;
+  font-weight: 600;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .filters-row {
+    flex-direction: column;
+  }
+
+  .charts {
+    flex-direction: column;
+  }
+
+  .table-controls {
+    flex-direction: column;
+  }
+}
