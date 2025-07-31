@@ -10,6 +10,7 @@ import MachineAllocation from './pages/MachineAllocation';
 import Layout from './components/Layout';
 import CreateRequest from './pages/CreateRequest';
 import Dashboard from './pages/Dashboard';
+import About from './pages/About';
 function AppContent() {
   const isAuthenticated = localStorage.getItem('token');
   const location = useLocation();
@@ -24,6 +25,7 @@ function AppContent() {
         <Route path="/dashboard-user" element={isAuthenticated ? <Layout><Dashboard /></Layout> : <Navigate to="/" />} />
         <Route path="/create-request" element={isAuthenticated ? <Layout><CreateRequest /></Layout> : <Navigate to="/" />} />
         <Route path="/modify-user" element={isAuthenticated ? <Layout><ModifyUser /></Layout> : <Navigate to="/" />} />
+        <Route path="/about" element={isAuthenticated ? <Layout><About /></Layout> : <Navigate to="/" />} />
         <Route path="/script-management" element={<Layout><ScriptManagement /></Layout>} />
         <Route path="/allocation" element={<Layout><MachineAllocation /></Layout>} />
       </Routes>
