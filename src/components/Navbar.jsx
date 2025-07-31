@@ -82,7 +82,7 @@ function Navbar() {
           )}
         </div>
         {/* <Link to="#" onClick={handleLinkClick}></Link> */}
-        <Link to="#" onClick={handleLinkClick}>About Us</Link>
+        <Link to="/about" onClick={handleLinkClick}>About Us</Link>
 
         <div className="navbar-mobile-user">
           <span className="navbar-user">Om Korde</span>

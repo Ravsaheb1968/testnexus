@@ -6,17 +6,18 @@ function ActivateUser() {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [automationSuite, setAutomationSuite] = useState('');
+  const [machineName, setMachineName] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!email || !username || (userType === 'User' && !automationSuite)) {
+    if (!email || !username || !machineName || (userType === 'User' && !automationSuite)) {
       alert('Please fill all required fields.');
       return;
     }
 
     // TODO: Submit to backend
-    alert(`${userType} Activated`);
+    alert(`${userType} Activated\nEmail: ${email}\nUser: ${username}\nMachine: ${machineName}${userType === 'User' ? `\nSuite: ${automationSuite}` : ''}`);
   };
 
   const handleClear = () => {
@@ -24,6 +25,7 @@ function ActivateUser() {
     setEmail('');
     setUsername('');
     setAutomationSuite('');
+    setMachineName('');
   };
 
   return (
@@ -62,6 +64,15 @@ function ActivateUser() {
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          placeholder="Enter user name"
+        />
+
+        <label>Machine Name</label>
+        <input
+          type="text"
+          value={machineName}
+          onChange={(e) => setMachineName(e.target.value)}
+          placeholder="Enter machine name"
         />
 
         {userType === 'User' && (
@@ -71,6 +82,7 @@ function ActivateUser() {
               type="text"
               value={automationSuite}
               onChange={(e) => setAutomationSuite(e.target.value)}
+              placeholder="Enter automation suite"
             />
           </>
         )}
