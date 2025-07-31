@@ -1,114 +1,136 @@
+/* === Dashboard Container === */
 .dashboard-container {
   max-width: 1200px;
-  margin: 5rem auto;
+  margin: 6rem auto 2rem;
   padding: 2rem;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  backdrop-filter: blur(18px);
-  color: white;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px);
+  color: #fff;
 }
 
-.filters-section {
+/* === Titles === */
+.dashboard-container h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #f97316;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  color: #ccc;
+}
+
+/* === Filter Section === */
+.filter-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
   margin-bottom: 2rem;
 }
 
-.filters-row {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-}
-
-.filters-row select,
-.filters-row input {
-  flex: 1;
-  padding: 0.6rem;
+.filter-section select,
+.filter-section .btn.generate {
+  padding: 0.6rem 1rem;
+  border: none;
   border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 
-.generate-btn-row {
-  display: flex;
-  justify-content: flex-end;
+.filter-section select {
+  background-color: #fff;
+  color: #222;
+  min-width: 180px;
 }
 
 .btn.generate {
-  background-color: #22c55e;
+  background-color: #f97316;
   color: white;
-  border: none;
-  padding: 0.7rem 1.5rem;
-  font-weight: bold;
-  border-radius: 6px;
   cursor: pointer;
+  transition: 0.3s;
 }
 
+.btn.generate:hover {
+  background-color: #ec5b0e;
+}
+
+/* === Charts Section === */
 .execution-summary {
-  margin: 2rem 0;
+  margin-top: 2rem;
+}
+
+.execution-summary h4 {
+  text-align: center;
+  color: #f97316;
+  margin-bottom: 1rem;
 }
 
 .charts {
   display: flex;
-  gap: 2rem;
   flex-wrap: wrap;
-}
-
-.chart {
-  background: #1f1f1f;
-  border-radius: 8px;
-  padding: 1rem;
-  flex: 1;
-  min-height: 200px;
-  display: flex;
-  align-items: center;
+  gap: 2rem;
   justify-content: center;
 }
 
-.table-section {
+.chart {
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+/* === Table === */
+.result-table {
   margin-top: 2rem;
   overflow-x: auto;
 }
 
-.table-controls {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-table {
+.result-table table {
   width: 100%;
   border-collapse: collapse;
-  background-color: #fff;
-  color: #111;
+  background-color: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
   overflow: hidden;
 }
 
-th, td {
-  padding: 0.8rem 1rem;
-  border: 1px solid #ddd;
-  font-size: 0.95rem;
-  text-align: left;
+.result-table th,
+.result-table td {
+  padding: 0.75rem 1rem;
+  text-align: center;
+  border-bottom: 1px solid #444;
+  color: white;
 }
 
-.status-completed {
-  color: green;
+.result-table th {
+  background-color: rgba(249, 115, 22, 0.2);
+  color: #f97316;
   font-weight: 600;
 }
 
-/* Responsive */
-@media screen and (max-width: 768px) {
-  .filters-row {
-    flex-direction: column;
-  }
+.result-table tr:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
 
+/* === Responsive === */
+@media (max-width: 768px) {
   .charts {
     flex-direction: column;
+    align-items: center;
   }
 
-  .table-controls {
+  .filter-section {
     flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-section select,
+  .filter-section .btn.generate {
+    width: 100%;
   }
 }

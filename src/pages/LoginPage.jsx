@@ -29,12 +29,12 @@ const Login = () => {
           Welcome to <span className="brand">TestNexus</span>
         </h2>
         <form onSubmit={handleLogin}>
-          <label htmlFor="email">
+          <label htmlFor="email" id="email">
             <FaEnvelope className="icon" />
             Email
           </label>
           <input
-            id="email"
+
             type="email"
             placeholder="Enter email"
             value={email}
@@ -42,12 +42,12 @@ const Login = () => {
             required
           />
 
-          <label htmlFor="password">
+          <label htmlFor="password" id="password">
             <FaLock className="icon" />
             Password
           </label>
           <input
-            id="password"
+
             type="password"
             placeholder="Enter password"
             value={password}

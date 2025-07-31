@@ -73,9 +73,10 @@ form input {
   border-radius: 6px;
   width: 100%;
   font-size: 1rem;
-  color: #000; /* black input text */
+  color: #000;
+  /* black input text */
   background-color: #fff;
-  margin-top:0.3rem;
+  margin-top: 0.3rem;
 }
 
 form input::placeholder {
@@ -88,11 +89,11 @@ form button {
   color: white;
   border: none;
   width: 100%;
-  border-radius: 6px; 
+  border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
   font-size: 1rem;
-  margin-top:0.1rem;
+  margin-top: 0.1rem;
 }
 
 form .error {
@@ -122,7 +123,7 @@ form .error {
 
 .remember-me input {
   transform: scale(1.1);
-  margin:0;
+  margin: 0;
 }
 
 .remember-me label {
@@ -145,13 +146,23 @@ form .error {
   vertical-align: middle;
 }
 
-#log-btn{
-  margin-top:2.5rem;
-  border:2px solid black
+#log-btn {
+  margin-top: 2.5rem;
+  border: 2px solid black
 }
-input{
-  border:2px solid black
+
+input {
+  border: 2px solid black
 }
+
+#email {
+  color: black;
+}
+
+#password {
+  color: black;
+}
+
 /* === Responsive === */
 @media screen and (max-width: 768px) {
   .login-wrapper {
