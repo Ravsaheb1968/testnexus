@@ -1,172 +1,170 @@
-/* === Main Container === */
+/* === Container === */
 .script-management-container {
-    max-width: 1000px;
-    margin: 6rem auto 2rem;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    /* z-index: 1;
-    position: relative; */
-    min-height: calc(60vh - 6rem);
-    /* overflow-y: auto; */
-    /* background-color: rgba(255, 255, 255, 0.08); */
-    /* backdrop-filter: blur(20px); */
-    
+  max-width: 1100px;
+  margin: 6rem auto 2rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  border-radius: 12px;
+  color: white;
+  font-family: 'Segoe UI', sans-serif;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
 }
 
-/* === Form Rows === */
-.script-form .form-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    align-items: center
+.script-management-container h2 {
+  margin-bottom: 1rem;
+  font-size: 1.9rem;
+  color: #f97316;
 }
 
-.form-group {
-    flex: 1;
-    min-width: 200px;
-    display: flex;
-    flex-direction: column;
+/* === Selectors Row === */
+.selectors {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+  align-items: flex-end;
 }
 
-/* === Buttons === */
-.button-group {
-    flex: 0;
-    margin-top: auto;
+.field {
+  display: flex;
+  flex-direction: column;
+  min-width: 220px;
+  flex: 1;
+  gap: 0.25rem;
 }
 
-.btn-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-    margin-top: 1rem;
+.field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #ccc;
 }
 
-.btn-group.short-button {
-    max-width: 150px;
-    align-self: flex-end;
+.field select {
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #1f1f2a;
+  color: #fff;
+  font-size: 0.95rem;
+  appearance: none;
+  cursor: pointer;
+}
+
+/* === Action Button === */
+.action {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .btn {
-    padding: 0.6rem 1.2rem;
-    border: none;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: 0.3s ease;
+  padding: 0.55rem 1rem;
+  background: #22c55e;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  color: white;
+  transition: filter 0.2s ease;
 }
 
 .btn.green {
-    background-color: #28a745;
+  background: #22c55e;
 }
 
-.btn.red {
-    background-color: #5935dc;
+.btn.green:hover {
+  filter: brightness(1.1);
 }
 
-/* === Inputs === */
-label {
-    font-weight: 500;
-    margin-bottom: 0.2rem;
-    color: white;
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-select,
-input[type="text"] {
-    padding: 0.6rem;
-    border: 1px solid #f7f6f6;
-    background-color: white;
-    border-radius: 4px;
-    width: 100%;
-    color: rgb(22, 22, 22);
-}
-
-/* === Table === */
+/* === Testcase Table === */
 .testcase-list {
-    margin-top: 2rem;
-    overflow-x: auto;
+  margin-top: 1.5rem;
+  overflow-x: auto;
 }
 
-.testcase-table {
+.testcase-list table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(31, 31, 42, 0.8);
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 0.9rem;
+}
+
+.testcase-list th,
+.testcase-list td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: #e8e8e8;
+}
+
+.testcase-list th {
+  background: rgba(249, 115, 22, 0.15);
+  color: #f97316;
+  font-weight: 600;
+}
+
+.testcase-list tr:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.testcase-list select {
+  padding: 0.4rem 0.6rem;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #1f1f2a;
+  color: #fff;
+  font-size: 0.85rem;
+}
+
+/* === Empty State === */
+.testcase-list td[colspan] {
+  text-align: center;
+  padding: 1rem;
+  font-style: italic;
+  color: #999;
+}
+
+/* === Responsive === */
+@media (max-width: 1024px) {
+  .selectors {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .field {
+    min-width: 100%;
+  }
+
+  .action {
+    margin-top: 0.5rem;
+  }
+
+  .testcase-list table {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .script-management-container {
+    padding: 1.5rem;
+    margin: 4rem 1rem 1rem;
+  }
+
+  .testcase-list th,
+  .testcase-list td {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .btn {
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
-    color: rgb(255, 255, 255);
-    font-size: 0.95rem;
+  }
 }
-
-.testcase-table th,
-.testcase-table td {
-    border: 1px solid #ffffff;
-    padding: 0.6rem 1rem;
-    text-align: left;
-}
-
-.blocked {
-    opacity: 0.6;
-}
-
-/* === Select All Checkbox === */
-.select-all-container {
-    margin-bottom: 1rem;
-    margin-left: 1.5rem;
-    font-weight: 500;
-
-}
-
-#lable-name2,
-#lable-name1 {
-    color: white;
-}
-
-/* === Responsive === */
-@media screen and (max-width: 768px) {
-    .script-management-container {
-        padding: 1rem;
-    }
-
-    .script-form .form-row {
-        flex-direction: column;
-    }
-
-    .btn-group.short-button {
-        align-self: center;
-    }
-
-    .testcase-table {
-        font-size: 0.85rem;
-    }
-
-    .btn {
-        font-size: 0.9rem;
-    }
-}
-
-/* === Responsive === */
-/* @media screen and (max-width: 600px) {
-    .user-management-card {
-        padding: 1.5rem;
-        justify-content: center;
-        align-items: center;
-        max-width: 100%;
-    }
-
-    .form-buttons {
-        flex-direction: column;
-    }
-} */
-
- @media screen and (max-width: 480px) {
-    .script-management-container {
-        margin: 4rem 1rem 1rem;
-    }
-
-    .form-group {
-        min-width: 100%;
-    }
-
-    .testcase-table th,
-    .testcase-table td {
-        padding: 0.4rem 0.6rem;
-    }
-} 

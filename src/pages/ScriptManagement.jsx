@@ -1,128 +1,222 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './ScriptManagement.css';
 
+const mockSuites = [
+  { id: 'CPQ_Quote_Processing', name: 'CPQ Quote Processing' },
+  { id: 'Payments_Gateway', name: 'Payments Gateway' },
+];
+
+const mockFunctionAreas = {
+  CPQ_Quote_Processing: [
+    { id: 'Legacy_Product', name: 'Legacy Product' },
+    { id: 'Agent_Journey', name: 'Agent Journey' },
+  ],
+  Payments_Gateway: [
+    { id: 'Bank_API_Integration', name: 'Bank API Integration' },
+    { id: 'Transaction_Monitor', name: 'Transaction Monitor' },
+  ],
+};
+
+// Test cases keyed by function area
+const mockTestCases = {
+  Legacy_Product: [
+    {
+      execution: {
+        id: 1,
+        assigned_user: 'userA',
+        machine_name: 'MACHINE_01',
+        status: 'In-Queue',
+      },
+      testCase: { name: 'TC_Legacy_1' },
+    },
+    {
+      execution: {
+        id: 2,
+        assigned_user: 'userB',
+        machine_name: 'MACHINE_02',
+        status: 'Pass',
+      },
+      testCase: { name: 'TC_Legacy_2' },
+    },
+  ],
+  Agent_Journey: [
+    {
+      execution: {
+        id: 3,
+        assigned_user: 'userC',
+        machine_name: 'MACHINE_03',
+        status: 'In-Progress',
+      },
+      testCase: { name: 'TC_Agent_1' },
+    },
+    {
+      execution: {
+        id: 4,
+        assigned_user: 'userD',
+        machine_name: 'MACHINE_04',
+        status: 'Fail',
+      },
+      testCase: { name: 'TC_Agent_2' },
+    },
+  ],
+  Bank_API_Integration: [
+    {
+      execution: {
+        id: 5,
+        assigned_user: 'userE',
+        machine_name: 'MACHINE_05',
+        status: 'Pass',
+      },
+      testCase: { name: 'TC_Bank_1' },
+    },
+  ],
+  Transaction_Monitor: [
+    {
+      execution: {
+        id: 6,
+        assigned_user: 'userF',
+        machine_name: 'MACHINE_06',
+        status: 'In-Queue',
+      },
+      testCase: { name: 'TC_Trans_1' },
+    },
+  ],
+};
+
+const STATUS_OPTIONS = ['In-Queue', 'In-Progress', 'Pass', 'Fail'];
+
 function ScriptManagement() {
-  const [suite, setSuite] = useState('');
-  const [functionArea, setFunctionArea] = useState('');
+  const [suites, setSuites] = useState([]);
+  const [selectedSuite, setSelectedSuite] = useState('');
+  const [functionAreas, setFunctionAreas] = useState([]);
+  const [selectedFA, setSelectedFA] = useState('');
   const [testCases, setTestCases] = useState([]);
-  const [userType, setUserType] = useState('Admin'); // This would typically come from auth
-  const [selectAll, setSelectAll] = useState(false);
 
-  const fetchTestCases = () => {
-    setTestCases([
-      { id: 1, name: 'TC_ModCom_Agent_Journey', blocked: false, selected: false },
-      { id: 2, name: 'TC_Multiple_ManualRequests_Agent_Journey', blocked: false, selected: false },
-      { id: 3, name: 'TC_IPAccess_With_Addons_Agent_Journey', blocked: false, selected: false },
-    ]);
-    setSelectAll(false);
+  useEffect(() => {
+    // simulate fetching available suites
+    setSuites(mockSuites);
+  }, []);
+
+  useEffect(() => {
+    if (selectedSuite) {
+      // load function areas for suite
+      setFunctionAreas(mockFunctionAreas[selectedSuite] || []);
+      setSelectedFA('');
+      setTestCases([]);
+    }
+  }, [selectedSuite]);
+
+  const handleShow = () => {
+    if (!selectedFA) return;
+    // simulate fetching test cases
+    setTestCases(mockTestCases[selectedFA] || []);
   };
 
-  const toggleSelectTest = (index) => {
+  const handleStatusChange = (executionId, newStatus) => {
     setTestCases(prev =>
-      prev.map((test, i) =>
-        i === index ? { ...test, selected: !test.selected } : test
-      )
-    );
-  };
-
-  const toggleBlockAll = () => {
-    setTestCases(prev =>
-      prev.map(test =>
-        test.selected ? { ...test, blocked: true, selected: false } : test
-      )
-    );
-  };
-
-  const handleSelectAll = () => {
-    setSelectAll(prev => !prev);
-    setTestCases(prev =>
-      prev.map(test =>
-        test.blocked ? test : { ...test, selected: !selectAll }
-      )
+      prev.map(tc => {
+        if (tc.execution.id === executionId) {
+          return {
+            ...tc,
+            execution: {
+              ...tc.execution,
+              status: newStatus,
+            },
+          };
+        }
+        return tc;
+      })
     );
   };
 
   return (
     <div className="script-management-container">
-      <h2>Block Test Scenarios</h2>
-      <form className="script-form">
-        <div className="form-row">
-          <div className="form-group">
-            <label id='lable-name1' >Suite</label>
-            <select value={suite} onChange={(e) => setSuite(e.target.value)}>
-              <option value="">--Select--</option>
-              <option value="CPQ_Quote_Processing">CPQ_Quote_Processing</option>
-              <option value="Number_On_Demand">Number_On_Demand</option>
-            </select>
-          </div>
+      <h2>Script Management</h2>
 
-          <div className="form-group">
-            <label id='lable-name2'>Functional Area</label>
-            <select value={functionArea} onChange={(e) => setFunctionArea(e.target.value)}>
-              <option value="">--Select--</option>
-              <option value="Batch">Batch</option>
-              <option value="Agent Journey">Agent Journey</option>
-            </select>
-          </div>
-
-          <div className="form-group button-group">
-            <button type="button" className="btn green" onClick={fetchTestCases}>
-              Show
-            </button>
-          </div>
+      <div className="selectors">
+        <div className="field">
+          <label>Suite</label>
+          <select
+            value={selectedSuite}
+            onChange={e => setSelectedSuite(e.target.value)}
+          >
+            <option value="">-- Select Suite --</option>
+            {suites.map(s => (
+              <option key={s.id} value={s.id}>
+                {s.name}
+              </option>
+            ))}
+          </select>
         </div>
-      </form>
 
-      {testCases.length > 0 && (
-        <div className="testcase-list">
-          <div className="select-all-container">
-            <label>
-              <input 
-                type="checkbox"
-                checked={selectAll}
-                onChange={handleSelectAll}
-              />
-              Select All
-            </label>
-          </div>
+        <div className="field">
+          <label>Function Area</label>
+          <select
+            value={selectedFA}
+            onChange={e => setSelectedFA(e.target.value)}
+            disabled={!selectedSuite}
+          >
+            <option value="">-- Select Function Area --</option>
+            {functionAreas.map(fa => (
+              <option key={fa.id} value={fa.id}>
+                {fa.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-          <table className="testcase-table">
-            <thead>
-              <tr>
-                <th>Select</th>
-                <th>Test Case Name</th>
-              </tr>
-            </thead>
-            <tbody>
-              {testCases.map((test, index) => (
-                <tr key={test.id} className={test.blocked ? 'blocked' : ''}>
+        <div className="action">
+          <button className="btn green" onClick={handleShow} disabled={!selectedFA}>
+            Show
+          </button>
+        </div>
+      </div>
+
+      <div className="testcase-list">
+        <table>
+          <thead>
+            <tr>
+              <th>Test Case</th>
+              <th>User</th>
+              <th>Machine</th>
+              <th>Status</th>
+              <th>Change Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {testCases.length > 0 ? (
+              testCases.map(tc => (
+                <tr key={tc.execution.id}>
+                  <td>{tc.testCase.name}</td>
+                  <td>{tc.execution.assigned_user}</td>
+                  <td>{tc.execution.machine_name}</td>
+                  <td>{tc.execution.status}</td>
                   <td>
-                    <input
-                      type="checkbox"
-                      disabled={test.blocked}
-                      checked={test.selected}
-                      onChange={() => toggleSelectTest(index)}
-                    />
+                    <select
+                      value={tc.execution.status}
+                      onChange={e =>
+                        handleStatusChange(tc.execution.id, e.target.value)
+                      }
+                    >
+                      {STATUS_OPTIONS.map(s => (
+                        <option key={s} value={s}>
+                          {s}
+                        </option>
+                      ))}
+                    </select>
                   </td>
-                  <td>{test.name}</td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-
-          {userType === 'Admin' && (
-            <div className="btn-group short-button">
-              <button
-                type="button"
-                className="btn red"
-                onClick={toggleBlockAll}
-              >
-                Save
-              </button>
-            </div>
-          )}
-        </div>
-      )}
+              ))
+            ) : (
+              <tr>
+                <td colSpan={5} style={{ textAlign: 'center' }}>
+                  {selectedFA ? 'No test cases for this function area.' : 'Select suite & function area then click Show.'}
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

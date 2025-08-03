@@ -1,9 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 
+// Simple JWT role extractor (no validation; assume token is well-formed)
+function getUserRole() {
+  const token = localStorage.getItem('token');
+  if (!token) return null;
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.role || null;
+  } catch {
+    return null;
+  }
+}
+
 function Navbar() {
   const navigate = useNavigate();
+  const role = useMemo(() => getUserRole(), []);
+  const isAdmin = role === 'admin';
+
   const [showAutomationCatalog, setShowAutomationCatalog] = useState(false);
   const [showAdminMenu, setShowAdminMenu] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
@@ -14,76 +29,121 @@ function Navbar() {
     navigate('/');
   };
 
-  const handleLinkClick = () => {
+  const closeAll = () => {
     setShowAdminMenu(false);
     setShowUserMenu(false);
-    setShowMobileMenu(false);
     setShowAutomationCatalog(false);
+    setShowMobileMenu(false);
   };
 
   const toggleAdminMenu = () => {
-    setShowAdminMenu((prev) => !prev);
-    setShowUserMenu(false);
+    setShowAdminMenu(prev => !prev);
     setShowAutomationCatalog(false);
+    setShowUserMenu(false);
   };
 
   const toggleUserMenu = () => {
-    setShowUserMenu((prev) => !prev);
-    setShowAutomationCatalog(false);
+    setShowUserMenu(prev => !prev);
   };
 
   const toggleAutomationCatalog = () => {
-    setShowAutomationCatalog((prev) => !prev);
+    setShowAutomationCatalog(prev => !prev);
     setShowAdminMenu(false);
     setShowUserMenu(false);
-  }
+  };
+
   return (
     <nav className="navbar">
-      <div className="navbar-logo">test<span>Nexus</span></div>
-
-      <button className="navbar-menu-toggle" onClick={() => setShowMobileMenu((prev) => !prev)}>
-        ☰
-      </button>
-
-      <div className={`navbar-links ${showMobileMenu ? 'active' : ''}`}>
-        <div className="dropdown">
-          <span className="dropdown-toggle" onClick={toggleAdminMenu}>
-            Admin Portal ▾
-          </span>
-          {showAdminMenu && (
-            <div className="dropdown-menu">
-              <span className="dropdown-subtoggle" onClick={toggleUserMenu}>
-                User Management ▸
-              </span>
-              {showUserMenu && (
-                <div className="sub-dropdown-menu">
-                  <Link to="/activate-user" onClick={handleLinkClick}>Activate User</Link>
-                  <Link to="/deactivate-user" onClick={handleLinkClick}>Deactivate User</Link>
-                  <Link to="/modify-user" onClick={handleLinkClick}>Modify User</Link>
-                </div>
-              )}
-              <Link to="/script-management" onClick={handleLinkClick}>Script Management</Link>
-              <Link to="/allocation" onClick={handleLinkClick}>Allocation</Link>
-            </div>
-          )}
+      <div className="navbar-left">
+        <div className="navbar-logo">
+          test<span>Nexus</span>
         </div>
+
+        {isAdmin && (
+          <div className="dropdown">
+            <span
+              className="dropdown-toggle"
+              onClick={toggleAdminMenu}
+              aria-expanded={showAdminMenu}
+            >
+              Admin Portal ▾
+            </span>
+            {showAdminMenu && (
+              <div className="dropdown-menu">
+                <span
+                  className="dropdown-subtoggle"
+                  onClick={toggleUserMenu}
+                  aria-expanded={showUserMenu}
+                >
+                  User Management ▸
+                </span>
+                {showUserMenu && (
+                  <div className="sub-dropdown-menu">
+                    <Link to="/activate-user" onClick={closeAll}>
+                      Activate User
+                    </Link>
+                    <Link to="/deactivate-user" onClick={closeAll}>
+                      Deactivate User
+                    </Link>
+                    <Link to="/modify-user" onClick={closeAll}>
+                      Modify User
+                    </Link>
+                  </div>
+                )}
+                <Link to="/script-management" onClick={closeAll}>
+                  Script Management
+                </Link>
+                <Link to="/allocation" onClick={closeAll}>
+                  Allocation
+                </Link>
+              </div>
+            )}
+          </div>
+        )}
+
         <div className="dropdown">
-          <span className="dropdown-toggle" onClick={toggleAutomationCatalog}>
+          <span
+            className="dropdown-toggle"
+            onClick={toggleAutomationCatalog}
+            aria-expanded={showAutomationCatalog}
+          >
             Automation Catalog ▾
           </span>
           {showAutomationCatalog && (
             <div className="dropdown-menu">
-              {/* <span className="dropdown-subtoggle" onClick={toggleUserMenu}>
-                User Management ▸
-              </span> */}
-              <Link to="/create-request" onClick={handleLinkClick}>Create Request</Link>
-              <Link to="/dashboard-user" onClick={handleLinkClick}>Dashboard</Link>
+              <Link to="/create-request" onClick={closeAll}>
+                Create Request
+              </Link>
+              <Link to="/dashboard-user" onClick={closeAll}>
+                Dashboard
+              </Link>
+              <Link to="/suite-management" onClick={closeAll}>
+                Suite Management
+              </Link>
             </div>
           )}
         </div>
-        {/* <Link to="#" onClick={handleLinkClick}></Link> */}
-        <Link to="/about" onClick={handleLinkClick}>About Us</Link>
 
+        <Link to="/about" onClick={closeAll}>
+          About Us
+        </Link>
+      </div>
+
+      <button
+        className="navbar-menu-toggle"
+        onClick={() => {
+          setShowMobileMenu(prev => !prev);
+          setShowAdminMenu(false);
+          setShowAutomationCatalog(false);
+          setShowUserMenu(false);
+        }}
+        aria-label="Toggle menu"
+      >
+        ☰
+      </button>
+
+      <div className={`navbar-links ${showMobileMenu ? 'active' : ''}`}>
+        {/* mobile & fallback user/logout block */}
         <div className="navbar-mobile-user">
           <span className="navbar-user">Om Korde</span>
           <button onClick={handleLogout}>Logout</button>
