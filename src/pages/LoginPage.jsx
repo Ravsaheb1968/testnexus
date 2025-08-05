@@ -32,7 +32,7 @@ const Login = () => {
     // Simulate authentication delay
     try {
       // Determine role: crude rule for demo
-      const role = email.toLowerCase().includes('admin') ? 'admin' : 'user';
+      const role = email.toLowerCase().includes('admin') ? 'user' : 'admin';
       const token = makeFakeToken({ email, role });
 
       localStorage.setItem('token', token);

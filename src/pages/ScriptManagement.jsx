@@ -83,7 +83,7 @@ const mockTestCases = {
   ],
 };
 
-const STATUS_OPTIONS = ['In-Queue', 'In-Progress', 'Pass', 'Fail'];
+const STATUS_OPTIONS = ['Not Run', 'In-Progress', 'Passed', 'Failed','Blocked',];
 
 function ScriptManagement() {
   const [suites, setSuites] = useState([]);
