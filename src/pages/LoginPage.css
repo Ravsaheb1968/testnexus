@@ -119,6 +119,7 @@ form .error {
   gap: 0.4rem;
   line-height: 1;
   white-space: nowrap;
+  color: black;
 }
 
 .remember-me input {
@@ -129,6 +130,7 @@ form .error {
 .remember-me label {
   margin: 0;
   cursor: pointer;
+
 }
 
 .forgot {
