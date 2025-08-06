@@ -1,18 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './LoginPage.css';
 import loginBg from '/images/Logo.png';
 import { FaEnvelope, FaLock } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-
-const makeFakeToken = ({ email, role }) => {
-  // simple unsigned base64 payload; in real app use real JWT from backend
-  const payload = {
-    email,
-    role,
-    exp: Math.floor(Date.now() / 1000) + 3600, // expires in 1h
-  };
-  return `fake.${btoa(JSON.stringify(payload))}.token`;
-};
+import axios from 'axios';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -23,45 +14,54 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    // Basic mock validation
+
+    // Validation
     if (!email || !password) {
       setError('Email and password are required.');
       return;
     }
 
-    // Simulate authentication delay
     try {
-      // Determine role: crude rule for demo
-      const role = email.toLowerCase().includes('admin') ? 'user' : 'admin';
-      const token = makeFakeToken({ email, role });
+      const res = await axios.post('http://localhost:5000/api/auth/login', {
+        email,
+        password
+      });
 
+      const { token, user } = res.data;
+
+      // Store JWT token in localStorage
       localStorage.setItem('token', token);
+
+      // Handle "Remember Me"
       if (remember) {
         localStorage.setItem('rememberedEmail', email);
       } else {
         localStorage.removeItem('rememberedEmail');
       }
 
-      // Redirect to dashboard-user (non-admin) or activate-user if admin
-      if (role === 'admin') {
+      // Redirect based on role
+      if (user.role === 'admin') {
         navigate('/activate-user');
       } else {
         navigate('/dashboard-user');
       }
     } catch (err) {
-      console.error(err);
-      setError('Login failed. Try again.');
+      console.error('Login error:', err);
+      if (err.response?.data?.msg) {
+        setError(err.response.data.msg);
+      } else {
+        setError('Login failed. Please try again.');
+      }
     }
   };
 
-  // Pre-fill remembered email
-  useState(() => {
+  useEffect(() => {
     const remembered = localStorage.getItem('rememberedEmail');
     if (remembered) {
       setEmail(remembered);
       setRemember(true);
     }
-  });
+  }, []);
 
   return (
     <div className="login-wrapper">
@@ -124,8 +124,13 @@ const Login = () => {
           <button type="submit" id="log-btn">
             Login
           </button>
+
           {error && <p className="error">{error}</p>}
         </form>
+
+        <p className="register-link">
+          New user? <a href="/signup">Register</a>
+        </p>
       </div>
     </div>
   );

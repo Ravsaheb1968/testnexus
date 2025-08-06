@@ -165,6 +165,22 @@ input {
   color: black;
 }
 
+.register-link {
+  margin-top: 1rem;
+  text-align: center;
+  color: #000000;
+}
+
+.register-link a {
+  color: #0ca6f4;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}
+
 /* === Responsive === */
 @media screen and (max-width: 768px) {
   .login-wrapper {

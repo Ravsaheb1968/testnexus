@@ -1,13 +1,14 @@
 import React, { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import './Navbar.css';
 
-function getUserRole() {
+function getUserInfo() {
   const token = localStorage.getItem('token');
   if (!token) return null;
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
-    return payload.role || null;
+    return { role: payload.role || null, email: payload.email || '', username: payload.username || '' };
   } catch {
     return null;
   }
@@ -15,8 +16,9 @@ function getUserRole() {
 
 function Navbar() {
   const navigate = useNavigate();
-  const role = useMemo(() => getUserRole(), []);
-  const isAdmin = role === 'admin';
+  const userInfo = useMemo(() => getUserInfo(), []);
+  const isAdmin = userInfo?.role === 'admin';
+  const username = userInfo?.username || 'User';
 
   const [showAutomationCatalog, setShowAutomationCatalog] = useState(false);
   const [showAdminMenu, setShowAdminMenu] = useState(false);
@@ -25,7 +27,9 @@ function Navbar() {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    navigate('/');
+    localStorage.removeItem('rememberedEmail');
+    toast.success('Logged out successfully!');
+    setTimeout(() => navigate('/'), 500);
   };
 
   const closeAll = () => {
@@ -89,14 +93,14 @@ function Navbar() {
 
         {/* mobile view user details */}
         <div className="navbar-user-mobile">
-          <span>Om Korde</span>
+          <span>{username}</span>
           <button onClick={handleLogout}>Logout</button>
         </div>
       </div>
 
       {/* desktop user */}
       <div className="navbar-right">
-        <span className="navbar-user">Om Korde</span>
+        <span className="navbar-user">{username}</span>
         <button onClick={handleLogout}>Logout</button>
       </div>
     </nav>

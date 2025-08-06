@@ -6,8 +6,11 @@ import {
   Navigate,
   useLocation,
 } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Login from './pages/LoginPage';
+import Signup from './pages/Signup';
 import ActivateUser from './pages/ActivateUser';
 import DeactivateUser from './pages/DeactivateUser';
 import ModifyUser from './pages/ModifyUser';
@@ -19,7 +22,9 @@ import CreateRequest from './pages/CreateRequest';
 import Dashboard from './pages/Dashboard';
 import About from './pages/About';
 import SuiteManagement from './pages/SuiteManagement';
-import AdminRoute from './components/AdminRoute'; // make sure this exists
+
+import AdminRoute from './components/AdminRoute';
+import PrivateRoute from './components/PrivateRoute'; // ✅ Import here
 
 function AppContent() {
   const isAuthenticated = !!localStorage.getItem('token');
@@ -28,128 +33,112 @@ function AppContent() {
   return (
     <>
       {isAuthenticated && location.pathname !== '/' && <Navbar />}
+
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
 
-        {/* Admin-only routes */}
+        {/* Admin-only protected routes */}
         <Route
           path="/activate-user"
           element={
-            isAuthenticated ? (
+            <PrivateRoute>
               <AdminRoute>
                 <Layout>
                   <ActivateUser />
                 </Layout>
               </AdminRoute>
-            ) : (
-              <Navigate to="/" replace />
-            )
+            </PrivateRoute>
           }
         />
         <Route
           path="/deactivate-user"
           element={
-            isAuthenticated ? (
+            <PrivateRoute>
               <AdminRoute>
                 <Layout>
                   <DeactivateUser />
                 </Layout>
               </AdminRoute>
-            ) : (
-              <Navigate to="/" replace />
-            )
+            </PrivateRoute>
           }
         />
         <Route
           path="/modify-user"
           element={
-            isAuthenticated ? (
+            <PrivateRoute>
               <AdminRoute>
                 <Layout>
                   <ModifyUser />
                 </Layout>
               </AdminRoute>
-            ) : (
-              <Navigate to="/" replace />
-            )
+            </PrivateRoute>
           }
         />
         <Route
           path="/script-management"
           element={
-            isAuthenticated ? (
+            <PrivateRoute>
               <AdminRoute>
                 <Layout>
                   <ScriptManagement />
                 </Layout>
               </AdminRoute>
-            ) : (
-              <Navigate to="/" replace />
-            )
+            </PrivateRoute>
           }
         />
         <Route
           path="/allocation"
           element={
-            isAuthenticated ? (
+            <PrivateRoute>
               <AdminRoute>
                 <Layout>
                   <MachineAllocation />
                 </Layout>
               </AdminRoute>
-            ) : (
-              <Navigate to="/" replace />
-            )
+            </PrivateRoute>
           }
         />
 
-        {/* Authenticated non-admin routes */}
+        {/* User-protected routes */}
         <Route
           path="/dashboard-user"
           element={
-            isAuthenticated ? (
+            <PrivateRoute>
               <Layout>
                 <Dashboard />
               </Layout>
-            ) : (
-              <Navigate to="/" replace />
-            )
+            </PrivateRoute>
           }
         />
         <Route
           path="/create-request"
           element={
-            isAuthenticated ? (
+            <PrivateRoute>
               <Layout>
                 <CreateRequest />
               </Layout>
-            ) : (
-              <Navigate to="/" replace />
-            )
+            </PrivateRoute>
           }
         />
         <Route
           path="/suite-management"
           element={
-            isAuthenticated ? (
+            <PrivateRoute>
               <Layout>
                 <SuiteManagement />
               </Layout>
-            ) : (
-              <Navigate to="/" replace />
-            )
+            </PrivateRoute>
           }
         />
         <Route
           path="/about"
           element={
-            isAuthenticated ? (
+            <PrivateRoute>
               <Layout>
                 <About />
               </Layout>
-            ) : (
-              <Navigate to="/" replace />
-            )
+            </PrivateRoute>
           }
         />
 
@@ -161,6 +150,8 @@ function AppContent() {
           }
         />
       </Routes>
+
+      <ToastContainer position="top-center" autoClose={3000} />
     </>
   );
 }
