@@ -7,6 +7,25 @@ function ModifyUser() {
   const [username, setUsername] = useState('');
   const [automationSuite, setAutomationSuite] = useState('');
 
+  // Static options (replace with API data in future)
+  const emailOptions = [
+    'user1@example.com',
+    'admin@example.com',
+    'qa.engineer@example.com'
+  ];
+
+  const usernameOptions = [
+    'omkorde',
+    'adminuser',
+    'qaengineer'
+  ];
+
+  const suiteOptions = [
+    'Regression Suite',
+    'Smoke Suite',
+    'E2E Suite'
+  ];
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -15,7 +34,7 @@ function ModifyUser() {
       return;
     }
 
-    alert(`${userType} Modified`);
+    alert(`${userType} Modified\nEmail: ${email}\nUser: ${username}${userType === 'User' ? `\nSuite: ${automationSuite}` : ''}`);
     // TODO: Send update request to backend
   };
 
@@ -53,25 +72,29 @@ function ModifyUser() {
 
         <label>Email ID</label>
         <select value={email} onChange={(e) => setEmail(e.target.value)}>
-          <option value="">--Select--</option>
-          <option value="user1@example.com">user1@example.com</option>
+          <option value="">--Select Email--</option>
+          {emailOptions.map((option, index) => (
+            <option key={index} value={option}>{option}</option>
+          ))}
         </select>
 
         <label>User Name</label>
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
+        <select value={username} onChange={(e) => setUsername(e.target.value)}>
+          <option value="">--Select Username--</option>
+          {usernameOptions.map((option, index) => (
+            <option key={index} value={option}>{option}</option>
+          ))}
+        </select>
 
         {userType === 'User' && (
           <>
             <label>Automation Suite</label>
-            <input
-              type="text"
-              value={automationSuite}
-              onChange={(e) => setAutomationSuite(e.target.value)}
-            />
+            <select value={automationSuite} onChange={(e) => setAutomationSuite(e.target.value)}>
+              <option value="">--Select Suite--</option>
+              {suiteOptions.map((suite, index) => (
+                <option key={index} value={suite}>{suite}</option>
+              ))}
+            </select>
           </>
         )}
 

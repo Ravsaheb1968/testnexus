@@ -2,11 +2,12 @@
   max-width: 1000px;
   margin: 6rem auto 2rem;
   padding: 2rem;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(14px);
   border-radius: 12px;
   color: white;
   font-family: 'Segoe UI', sans-serif;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
 }
 
 .suite-management-container h2 {
@@ -45,7 +46,7 @@ select,
 input {
   padding: 0.6rem 1rem;
   border-radius: 6px;
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   background: #1f1f2a;
   color: #fff;
   font-size: 0.95rem;
@@ -126,6 +127,68 @@ input {
 
 .btn.add:hover {
   filter: brightness(1.05);
+}
+
+/* === Modal Styling === */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 15, 20, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal {
+  background: #1f1f2a;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  color: white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+.modal h3 {
+  color: #38bdf8;
+  margin-bottom: 1rem;
+}
+
+.modal input {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  background: #282c34;
+  color: white;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.modal .btn {
+  flex: 1;
+  padding: 0.5rem;
+  background: #22c55e;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.modal .btn.cancel {
+  background: #ef4444;
 }
 
 /* Responsive */

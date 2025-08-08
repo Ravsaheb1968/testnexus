@@ -18,7 +18,18 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ['admin', 'user'],
     default: 'user'
+  },
+  machineName: {
+    type: String
+  },
+  assignedSuite: {
+    type: String
+  }, // Or Schema.Types.ObjectId if using a reference
+  isActive: {
+    type: Boolean,
+    default: false
   }
+
 }, {
   timestamps: true
 });

@@ -1,66 +1,84 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import './SuiteManagement.css';
-
-const mockActivatedUsers = [
-  // In real app, replace with API call to get activated users and their assigned suites
-  { email: 'user1@example.com', userName: 'user1', suite: 'CPQ_Quote_Processing' },
-  { email: 'user2@example.com', userName: 'user2', suite: 'Payments_Gateway' },
-];
-
-// Persisted suites with their function areas (could come from backend)
-const initialSuites = {
-  CPQ_Quote_Processing: ['Legacy_Product'],
-  Payments_Gateway: ['Bank_API_Integration'],
-};
+import { toast } from 'react-toastify';
 
 const SuiteManagement = () => {
-  const [suites, setSuites] = useState(initialSuites); // { suiteName: [functionArea1,...] }
+  const [suites, setSuites] = useState({}); // { suiteName: [functionArea1, ...] }
   const [selectedSuite, setSelectedSuite] = useState('');
   const [newFunctionArea, setNewFunctionArea] = useState('');
-  const [availableSuites, setAvailableSuites] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newSuiteName, setNewSuiteName] = useState('');
 
+  // Fetch all suites on mount
   useEffect(() => {
-    // Derive available suites from activated users (simulate fetch)
-    const uniqueSuites = Array.from(new Set(mockActivatedUsers.map(u => u.suite)));
-    setAvailableSuites(uniqueSuites);
-    if (!selectedSuite && uniqueSuites.length) {
-      setSelectedSuite(uniqueSuites[0]);
-    }
+    const fetchSuites = async () => {
+      try {
+        const res = await axios.get('/api/suites');
+        const mappedSuites = {};
+        res.data.forEach(suite => {
+          mappedSuites[suite.name] = suite.functionAreas || [];
+        });
+        setSuites(mappedSuites);
+        const suiteNames = Object.keys(mappedSuites);
+        if (suiteNames.length && !selectedSuite) {
+          setSelectedSuite(suiteNames[0]);
+        }
+      } catch (err) {
+        toast.error('Failed to load suites');
+        console.error(err);
+      }
+    };
+
+    fetchSuites();
   }, []);
 
-  const handleAddFunctionArea = () => {
-    if (!selectedSuite) return;
-    if (!newFunctionArea.trim()) {
-      alert('Function Area name cannot be empty.');
+  const handleAddFunctionArea = async () => {
+    if (!selectedSuite || !newFunctionArea.trim()) {
+      toast.warn('Function Area name cannot be empty.');
       return;
     }
-    setSuites(prev => {
-      const existing = prev[selectedSuite] || [];
-      if (existing.includes(newFunctionArea.trim())) {
-        alert('Function Area already exists for this suite.');
-        return prev;
-      }
-      return {
-        ...prev,
-        [selectedSuite]: [...existing, newFunctionArea.trim()],
+
+    try {
+      const payload = {
+        suiteName: selectedSuite,
+        functionArea: newFunctionArea.trim(),
       };
-    });
-    setNewFunctionArea('');
+
+      await axios.post('/api/suites/add-function-area', payload);
+
+      setSuites(prev => ({
+        ...prev,
+        [selectedSuite]: [...(prev[selectedSuite] || []), newFunctionArea.trim()],
+      }));
+
+      toast.success('Function area added');
+      setNewFunctionArea('');
+    } catch (err) {
+      toast.error(err.response?.data?.msg || 'Failed to add function area');
+      console.error(err);
+    }
   };
 
-  const handleCreateSuite = () => {
-    const suiteName = prompt('Enter new Suite name (no spaces, use underscores):');
-    if (!suiteName) return;
-    if (suites[suiteName]) {
-      alert('Suite already exists.');
+  const handleCreateSuite = async () => {
+    const suiteName = newSuiteName.trim();
+    if (!suiteName) {
+      toast.warn('Suite name cannot be empty');
       return;
     }
-    setSuites(prev => ({ ...prev, [suiteName]: [] }));
-    setAvailableSuites(prev => {
-      if (prev.includes(suiteName)) return prev;
-      return [...prev, suiteName];
-    });
-    setSelectedSuite(suiteName);
+
+    try {
+      await axios.post('/api/suites/create', { name: suiteName });
+
+      setSuites(prev => ({ ...prev, [suiteName]: [] }));
+      setSelectedSuite(suiteName);
+      toast.success('Suite created successfully');
+      setNewSuiteName('');
+      setIsModalOpen(false);
+    } catch (err) {
+      toast.error(err.response?.data?.msg || 'Failed to create suite');
+      console.error(err);
+    }
   };
 
   return (
@@ -77,11 +95,11 @@ const SuiteManagement = () => {
               onChange={(e) => setSelectedSuite(e.target.value)}
             >
               <option value="">-- Select Suite --</option>
-              {availableSuites.map((s) => (
+              {Object.keys(suites).map((s) => (
                 <option key={s} value={s}>{s}</option>
               ))}
             </select>
-            <button className="btn small" onClick={handleCreateSuite}>+ New Suite</button>
+            <button className="btn small" onClick={() => setIsModalOpen(true)}>+ New Suite</button>
           </div>
         </div>
       </div>
@@ -91,7 +109,7 @@ const SuiteManagement = () => {
           <h4>Function Areas for <span className="suite-name">{selectedSuite}</span></h4>
 
           <div className="existing-areas">
-            {suites[selectedSuite] && suites[selectedSuite].length > 0 ? (
+            {suites[selectedSuite]?.length > 0 ? (
               suites[selectedSuite].map((fa, idx) => (
                 <div key={idx} className="fa-badge">{fa}</div>
               ))
@@ -111,6 +129,24 @@ const SuiteManagement = () => {
               />
             </div>
             <button className="btn add" onClick={handleAddFunctionArea}>Add Function Area</button>
+          </div>
+        </div>
+      )}
+
+      {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>Create New Suite</h3>
+            <input
+              type="text"
+              placeholder="Suite name (e.g., Order_Processing)"
+              value={newSuiteName}
+              onChange={(e) => setNewSuiteName(e.target.value)}
+            />
+            <div className="modal-actions">
+              <button className="btn" onClick={handleCreateSuite}>Create</button>
+              <button className="btn cancel" onClick={() => setIsModalOpen(false)}>Cancel</button>
+            </div>
           </div>
         </div>
       )}
