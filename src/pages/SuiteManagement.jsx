@@ -4,7 +4,7 @@ import './SuiteManagement.css';
 import { toast } from 'react-toastify';
 
 const SuiteManagement = () => {
-  const [suites, setSuites] = useState({}); // { suiteName: [functionArea1, ...] }
+  const [suites, setSuites] = useState({}); // { suiteName: [functionArea,...] }
   const [selectedSuite, setSelectedSuite] = useState('');
   const [newFunctionArea, setNewFunctionArea] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,42 +14,44 @@ const SuiteManagement = () => {
   useEffect(() => {
     const fetchSuites = async () => {
       try {
+        // MUST match backend: GET /api/suites
         const res = await axios.get('/api/suites');
-        const mappedSuites = {};
-        res.data.forEach(suite => {
-          mappedSuites[suite.name] = suite.functionAreas || [];
+        const mapped = {};
+        (Array.isArray(res.data) ? res.data : []).forEach(s => {
+          mapped[s.name] = s.functionAreas || [];
         });
-        setSuites(mappedSuites);
-        const suiteNames = Object.keys(mappedSuites);
-        if (suiteNames.length && !selectedSuite) {
-          setSelectedSuite(suiteNames[0]);
+        setSuites(mapped);
+
+        const names = Object.keys(mapped);
+        if (names.length && !selectedSuite) {
+          setSelectedSuite(names[0]);
         }
       } catch (err) {
         toast.error('Failed to load suites');
         console.error(err);
       }
     };
-
     fetchSuites();
-  }, []);
+  }, []); // only once
 
   const handleAddFunctionArea = async () => {
     if (!selectedSuite || !newFunctionArea.trim()) {
       toast.warn('Function Area name cannot be empty.');
       return;
     }
-
     try {
-      const payload = {
+      await axios.post('/api/suites/add-function-area', {
         suiteName: selectedSuite,
         functionArea: newFunctionArea.trim(),
-      };
+      });
 
-      await axios.post('/api/suites/add-function-area', payload);
-
+      // Optimistic update
       setSuites(prev => ({
         ...prev,
-        [selectedSuite]: [...(prev[selectedSuite] || []), newFunctionArea.trim()],
+        [selectedSuite]: [
+          ...(prev[selectedSuite] || []),
+          newFunctionArea.trim()
+        ],
       }));
 
       toast.success('Function area added');
@@ -66,8 +68,8 @@ const SuiteManagement = () => {
       toast.warn('Suite name cannot be empty');
       return;
     }
-
     try {
+      // MUST match backend: POST /api/suites/create
       await axios.post('/api/suites/create', { name: suiteName });
 
       setSuites(prev => ({ ...prev, [suiteName]: [] }));
@@ -95,11 +97,13 @@ const SuiteManagement = () => {
               onChange={(e) => setSelectedSuite(e.target.value)}
             >
               <option value="">-- Select Suite --</option>
-              {Object.keys(suites).map((s) => (
-                <option key={s} value={s}>{s}</option>
+              {Object.keys(suites).map(name => (
+                <option key={name} value={name}>{name}</option>
               ))}
             </select>
-            <button className="btn small" onClick={() => setIsModalOpen(true)}>+ New Suite</button>
+            <button className="btn small" onClick={() => setIsModalOpen(true)}>
+              + New Suite
+            </button>
           </div>
         </div>
       </div>
@@ -109,7 +113,7 @@ const SuiteManagement = () => {
           <h4>Function Areas for <span className="suite-name">{selectedSuite}</span></h4>
 
           <div className="existing-areas">
-            {suites[selectedSuite]?.length > 0 ? (
+            {(suites[selectedSuite] || []).length > 0 ? (
               suites[selectedSuite].map((fa, idx) => (
                 <div key={idx} className="fa-badge">{fa}</div>
               ))
@@ -128,7 +132,9 @@ const SuiteManagement = () => {
                 onChange={(e) => setNewFunctionArea(e.target.value)}
               />
             </div>
-            <button className="btn add" onClick={handleAddFunctionArea}>Add Function Area</button>
+            <button className="btn add" onClick={handleAddFunctionArea}>
+              Add Function Area
+            </button>
           </div>
         </div>
       )}
