@@ -4,31 +4,27 @@ import { toast } from 'react-toastify';
 import './ActivateUser.css';
 
 function ActivateUser() {
-  const [userType, setUserType] = useState('User');
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [machineName, setMachineName] = useState('');
   const [automationSuite, setAutomationSuite] = useState('');
-
   const [userOptions, setUserOptions] = useState([]);
   const [suiteOptions, setSuiteOptions] = useState([]);
 
-  // Fetch users and suites
+  // Fetch only inactive users + suite list
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userRes = await axios.get('/api/admin/users');
+        const userRes = await axios.get('/api/admin/users?onlyInactive=true');
         const suiteRes = await axios.get('/api/admin/suites');
-        console.log("Fetched users →", userRes.data);
+
         setUserOptions(Array.isArray(userRes.data) ? userRes.data : []);
         setSuiteOptions(Array.isArray(suiteRes.data) ? suiteRes.data : []);
       } catch (err) {
         toast.error('Failed to fetch users or suites');
         console.error(err);
-        console.error("Axios error →", err);
       }
     };
-
     fetchData();
   }, []);
 
@@ -41,7 +37,7 @@ function ActivateUser() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!email || !username || !machineName || (userType === 'User' && !automationSuite)) {
+    if (!email || !username || !machineName || !automationSuite) {
       toast.warn('Please fill all required fields.');
       return;
     }
@@ -51,11 +47,14 @@ function ActivateUser() {
         email,
         username,
         machineName,
-        suite: userType === 'User' ? automationSuite : null
+        suite: automationSuite
       };
 
       const res = await axios.post('/api/admin/activate-user', payload);
       toast.success(res.data.msg || 'User activated successfully');
+
+      // Remove activated user from dropdown immediately
+      setUserOptions(prev => prev.filter(user => user.email !== email));
       handleClear();
     } catch (err) {
       toast.error(err.response?.data?.msg || 'Activation failed');
@@ -64,7 +63,6 @@ function ActivateUser() {
   };
 
   const handleClear = () => {
-    setUserType('User');
     setEmail('');
     setUsername('');
     setMachineName('');
@@ -75,27 +73,8 @@ function ActivateUser() {
     <div className="activate-user-container">
       <h2>Activate User</h2>
       <form className="activate-user-form" onSubmit={handleSubmit}>
-        <div className="radio-group">
-          <label>
-            <input
-              type="radio"
-              value="User"
-              checked={userType === 'User'}
-              onChange={() => setUserType('User')}
-            />
-            User
-          </label>
-          <label>
-            <input
-              type="radio"
-              value="Admin"
-              checked={userType === 'Admin'}
-              onChange={() => setUserType('Admin')}
-            />
-            Admin
-          </label>
-        </div>
 
+        {/* Email Dropdown */}
         <label>Email ID</label>
         <select value={email} onChange={(e) => setEmail(e.target.value)}>
           <option value="">-- Select Email --</option>
@@ -106,6 +85,7 @@ function ActivateUser() {
           ))}
         </select>
 
+        {/* Username Dropdown */}
         <label>Username</label>
         <select value={username} onChange={(e) => setUsername(e.target.value)}>
           <option value="">-- Select Username --</option>
@@ -116,6 +96,7 @@ function ActivateUser() {
           ))}
         </select>
 
+        {/* Machine Name */}
         <label>Machine Name</label>
         <input
           type="text"
@@ -124,19 +105,16 @@ function ActivateUser() {
           placeholder="Enter machine name"
         />
 
-        {userType === 'User' && (
-          <>
-            <label>Automation Suite</label>
-            <select value={automationSuite} onChange={(e) => setAutomationSuite(e.target.value)}>
-              <option value="">-- Select Suite --</option>
-              {suiteOptions.map((suite, i) => (
-                <option key={i} value={suite.name || suite}>
-                  {suite.name || suite}
-                </option>
-              ))}
-            </select>
-          </>
-        )}
+        {/* Automation Suite Dropdown */}
+        <label>Automation Suite</label>
+        <select value={automationSuite} onChange={(e) => setAutomationSuite(e.target.value)}>
+          <option value="">-- Select Suite --</option>
+          {suiteOptions.map((suite) => (
+            <option key={suite._id || suite.name} value={suite.name}>
+              {suite.name}
+            </option>
+          ))}
+        </select>
 
         <div className="btn-group">
           <button type="submit" className="btn green">Make Active</button>

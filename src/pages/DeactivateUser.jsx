@@ -7,19 +7,19 @@ function DeactivateUser() {
   const [email, setEmail] = useState('');
   const [userOptions, setUserOptions] = useState([]);
 
-  // Fetch all registered users (active or not)
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const res = await axios.get('/api/admin/users');
-        setUserOptions(res.data); // Now includes isActive field
-      } catch (err) {
-        toast.error('Failed to fetch users');
-        console.error(err);
-      }
-    };
+  // Fetch only active users
+  const fetchActiveUsers = async () => {
+    try {
+      const res = await axios.get('/api/admin/users?onlyActive=true');
+      setUserOptions(Array.isArray(res.data) ? res.data : []);
+    } catch (err) {
+      toast.error('Failed to fetch users');
+      console.error(err);
+    }
+  };
 
-    fetchUsers();
+  useEffect(() => {
+    fetchActiveUsers();
   }, []);
 
   const handleSubmit = async (e) => {
@@ -31,11 +31,14 @@ function DeactivateUser() {
     }
 
     try {
-      const res = await axios.post('/api/admin/deactivate-user', { email });
-      toast.success(res.data.msg || 'User deactivated');
+      // Hard delete: ensures they can't log in anymore
+      const res = await axios.post('/api/admin/deactivate-user', { email, hard: true });
+      toast.success(res.data.msg || 'User removed');
+
       setEmail('');
+      await fetchActiveUsers(); // Refresh from backend
     } catch (err) {
-      toast.error(err.response?.data?.msg || 'Failed to deactivate');
+      toast.error(err.response?.data?.msg || 'Failed to remove user');
       console.error(err);
     }
   };
@@ -49,7 +52,7 @@ function DeactivateUser() {
           <option value="">-- Select Email --</option>
           {userOptions.map(user => (
             <option key={user._id} value={user.email}>
-              {user.email} {user.isActive ? '' : '(Inactive)'}
+              {user.email}
             </option>
           ))}
         </select>
@@ -63,4 +66,3 @@ function DeactivateUser() {
 }
 
 export default DeactivateUser;
-

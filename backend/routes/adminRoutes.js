@@ -1,18 +1,12 @@
-const express = require('express');
-const router = express.Router();
-const adminController = require('../controllers/adminController');
+// routes/admin.js
+const router = require('express').Router();
+const admin = require('../controllers/adminController');
 
-// Get all registered users
-router.get('/users', adminController.getAllUsers);
+router.get('/users', admin.getAllUsers);
+router.get('/suites', admin.getAllSuites);
 
-// Get all suites
-router.get('/suites', adminController.getAllSuites);
-
-// Activate a user
-router.post('/activate-user', adminController.activateUser);
-
-// routes/adminRoutes.js
-router.post('/deactivate-user', adminController.deactivateUser);
-
+router.post('/activate-user', admin.activateUser);
+router.post('/deactivate-user', admin.deactivateUser);
+router.post('/modify-user-role', admin.modifyUserRole);
 
 module.exports = router;
