@@ -53,3 +53,23 @@ exports.addFunctionArea = async (req, res) => {
     res.status(500).json({ msg: 'Server error' });
   }
 };
+exports.removeFunctionArea = async (req, res) => {
+  try {
+    const { suiteName, functionArea } = req.body;
+
+    if (!suiteName || !functionArea) {
+      return res.status(400).json({ msg: 'Suite name and function area are required' });
+    }
+
+    const suite = await Suite.findOne({ name: suiteName });
+    if (!suite) return res.status(404).json({ msg: 'Suite not found' });
+
+    suite.functionAreas = suite.functionAreas.filter(fa => fa !== functionArea);
+    await suite.save();
+
+    res.status(200).json({ msg: 'Function area removed successfully', suite });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+};

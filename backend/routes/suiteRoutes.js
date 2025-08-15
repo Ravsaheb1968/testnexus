@@ -10,5 +10,7 @@ router.post('/create', suiteController.createSuite);
 
 // Add function area: POST /api/suites/add-function-area
 router.post('/add-function-area', suiteController.addFunctionArea);
+router.post('/remove-function-area', suiteController.removeFunctionArea);
 
 module.exports = router;
+

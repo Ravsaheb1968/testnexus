@@ -118,6 +118,26 @@ input {
   flex: 2;
 }
 
+.fa-badge {
+  display: inline-flex;
+  align-items: center;
+  background:linear-gradient(135deg, #ec4899, #6366f1);
+  padding: 4px 8px;
+  margin: 4px;
+  border-radius: 12px;
+}
+
+.delete-icon {
+  margin-left: 8px;
+  cursor: pointer;
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+}
+
+.delete-icon:hover {
+  color: darkred;
+}
+
 .btn.add {
   background: #22c55e;
   color: white;

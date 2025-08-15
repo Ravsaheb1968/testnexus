@@ -82,6 +82,24 @@ const SuiteManagement = () => {
       console.error(err);
     }
   };
+  const handleRemoveFunctionArea = async (faName) => {
+    try {
+      await axios.post('/api/suites/remove-function-area', {
+        suiteName: selectedSuite,
+        functionArea: faName,
+      });
+
+      setSuites(prev => ({
+        ...prev,
+        [selectedSuite]: prev[selectedSuite].filter(fa => fa !== faName),
+      }));
+
+      toast.success('Function area removed');
+    } catch (err) {
+      toast.error(err.response?.data?.msg || 'Failed to remove function area');
+      console.error(err);
+    }
+  };
 
   return (
     <div className="suite-management-container">
@@ -112,7 +130,7 @@ const SuiteManagement = () => {
         <div className="function-area-section">
           <h4>Function Areas for <span className="suite-name">{selectedSuite}</span></h4>
 
-          <div className="existing-areas">
+          {/* <div className="existing-areas">
             {(suites[selectedSuite] || []).length > 0 ? (
               suites[selectedSuite].map((fa, idx) => (
                 <div key={idx} className="fa-badge">{fa}</div>
@@ -120,7 +138,26 @@ const SuiteManagement = () => {
             ) : (
               <p className="empty">No function areas yet.</p>
             )}
+          </div> */}
+          <div className="existing-areas">
+            {(suites[selectedSuite] || []).length > 0 ? (
+              suites[selectedSuite].map((fa, idx) => (
+                <div key={idx} className="fa-badge">
+                  {fa}
+                  <span
+                    className="delete-icon"
+                    onClick={() => handleRemoveFunctionArea(fa)}
+                    title="Remove"
+                  >
+                    ✖
+                  </span>
+                </div>
+              ))
+            ) : (
+              <p className="empty">No function areas yet.</p>
+            )}
           </div>
+
 
           <div className="add-area">
             <div className="field">
