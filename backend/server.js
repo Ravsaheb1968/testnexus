@@ -18,6 +18,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes); // <— add this
 app.use('/api/admin', require('./routes/suiteRoutes'));
 app.use('/api/suites', suiteRoutes);
+app.use('/api/testcases', require('./routes/testCaseRoutes'));
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {

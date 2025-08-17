@@ -53,7 +53,7 @@ const CreateRequest = () => {
   };
 
   // 6️⃣ Submit request
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!automationSuite || !selectedFunctionArea || testCases.some(tc => !tc.trim())) {
@@ -67,14 +67,19 @@ const CreateRequest = () => {
       testCases
     };
 
-    console.log('Submitted Request:', payload);
-    toast.success('Test request submitted successfully!');
+    try {
+      await axios.post('/api/testcases/add', payload);
+      toast.success('✅ Test cases added successfully!');
 
-    // ✅ Reset form to initial state
-    setAutomationSuite('');
-    setFunctionAreas([]);
-    setSelectedFunctionArea('');
-    setTestCases(['']);
+      // Reset form
+      setAutomationSuite('');
+      setFunctionAreas([]);
+      setSelectedFunctionArea('');
+      setTestCases(['']);
+    } catch (err) {
+      console.error(err);
+      toast.error('❌ Failed to add test cases');
+    }
   };
 
 
